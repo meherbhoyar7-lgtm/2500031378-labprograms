@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Peak Greeting - Dr. M Bhoyar</title>
+    
+  
+    <style>
+        :root {
+            --primary-bg: linear-gradient(135deg, rgba(38, 166, 154, 0.7), rgba(41, 128, 185, 0.7));
+            --bg-image: url('https://res.cloudinary.com/enchanting/q_80,f_auto,c_fit,w_640,h_480/exodus-web/2024/10/AdobeStock_402537784.jpeg');
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --warning-color: #ff9800;
+            --error-color: #dc3545;
+            --text-glow: #10eeee;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-bg), var(--bg-image);
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: var(--container-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+            text-align: left;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--primary-color), #0056b3);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,123,255,0.4);
+        }
+
+        .btn-generate:active {
+            transform: translateY(-1px);
+        }
+
+        .mood-message {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            font-weight: 600;
+            min-height: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            line-height: 1.5;
+        }
+
+        .mood-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mood-message.animated {
+            animation: colorFade 3s ease-in-out infinite;
+        }
+
+        @keyframes colorFade {
+            0% { color: var(--primary-color); }
+            33% { color: var(--warning-color); }
+            66% { color: var(--success-color); }
+            100% { color: var(--primary-color); }
+        }
+
+        .error {
+            color: var(--error-color) !important;
+            background: rgba(220, 53, 69, 0.1);
+            border: 2px solid var(--error-color);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container" role="main">
+        <header>
+            <h1>🏔️ Peak Ascent with Dr. M Bhoyar</h1>
+        </header>
+
+        <form id="greetingForm" aria-labelledby="form-title">
+            <div class="form-group">
+                <label for="userName">Your Name</label>
+                <input 
+                    type="text" 
+                    id="userName" 
+                    placeholder="Enter your name"
+                    aria-describedby="name-help"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="mood">Current Trail Status</label>
+                <select id="mood" aria-describedby="mood-help" required>
+                    <option value="">Select your mood...</option>
+                    <option value="happy">😊 Ready to Summit</option>
+                    <option value="excited">🥳 Scaling High Peaks</option>
+                    <option value="sad">😟 Foggy Trail</option>
+                    <option value="tired">😴 Need Base Camp Rest</option>
+                </select>
+            </div>
+
+            <button 
+                type="submit" 
+                class="btn-generate"
+                aria-live="polite"
+            >
+                Check the Trail
+            </button>
+        </form>
+
+        <div 
+            id="message" 
+            class="mood-message"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+        ></div>
+    </main>
+
+    <script>
+        class MountainGreeting {
+            constructor() {
+                this.form = document.getElementById('greetingForm');
+                this.nameInput = document.getElementById('userName');
+                this.moodSelect = document.getElementById('mood');
+                this.messageBox = document.getElementById('message');
+                
+                this.init();
+            }
+
+            init() {
+                this.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.generateGreeting();
+                });
+            }
+
+            getTimeGreeting() {
+                const hour = new Date().getHours();
+                const greetings = {
+                    morning: 'Summit Sunrise',
+                    afternoon: 'Midday Altitude', 
+                    evening: 'Alpine Twilight'
+                };
+                
+                if (hour < 12) return greetings.morning;
+                if (hour < 18) return greetings.afternoon;
+                return greetings.evening;
+            }
+
+            getMoodMessage(mood) {
+                const messages = {
+                    happy: "Your spirit is clear like the mountain air! Ready for the ascent.",
+                    excited: "Feel that high-altitude thrill! Enjoy the climb, the view is worth it.",
+                    sad: "If the trail is foggy, slow down. May your visibility improve soon.",
+                    tired: "Take a moment at base camp. Rest and rehydrate before the next leg."
+                };
+                
+                return messages[mood] || "Hope you find the best path on your journey today.";
+            }
+
+            validateInputs() {
+                const name = this.nameInput.value.trim();
+                const mood = this.moodSelect.value;
+                
+                if (!name || !mood) {
+                    this.showError("❌ Please enter your **name** and **select your trail status**!");
+                    return false;
+                }
+                return true;
+            }
+
+            showError(message) {
+                this.messageBox.innerHTML = message;
+                this.messageBox.className = 'mood-message show error';
+            }
+
+            showSuccess(name, mood) {
+                const timeGreeting = this.getTimeGreeting();
+                const moodMessage = this.getMoodMessage(mood);
+                
+                this.messageBox.innerHTML = `${timeGreeting}, <strong>${name}</strong>!<br>${moodMessage}`;
+                this.messageBox.className = 'mood-message show animated';
+            }
+
+            generateGreeting() {
+                if (!this.validateInputs()) return;
+                
+                const name = this.nameInput.value.trim();
+                const mood = this.moodSelect.value;
+                
+                this.showSuccess(name, mood);
+            }
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new MountainGreeting();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;404;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* --- AESTHETIC CSS STYLING --- */
+        :root {
+            --light-color: #f7f7f7;
+            --dark-color: rgba(18, 18, 18, 0.85); /* For glass base */
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --primary-accent: #00bcd4; /* Cyan/Turquoise */
+            --shadow-light: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 15px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #2c3e50; /* Fallback */
+            margin: 0;
+            padding: 0;
+            color: var(--light-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Dynamic Background Image */
+            background-image: url('https://images.unsplash.com/photo-1542472737-23363fe507a2?fit=crop&w=1500&h=1000'); /* Use an aesthetic, high-res background */
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out; /* Smooth transition for background change */
+        }
+
+        /* --- Glassmorphism Container --- */
+        .dashboard-container {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: var(--dark-color);
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-light);
+            padding: 40px;
+            width: 90%;
+            max-width: 950px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: var(--light-color);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        /* --- Search Form Styling --- */
+        #search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        #city-input {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+            width: 70%;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            transition: background 0.3s ease;
+        }
+
+        #city-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        #city-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #search-btn {
+            padding: 12px 25px;
+            background-color: var(--primary-accent);
+            color: var(--dark-color);
+            font-weight: 600;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
+        }
+
+        /* --- Button Hover Effect --- */
+        #search-btn:hover {
+            background-color: #00a4b8;
+            box-shadow: 0 0 15px var(--primary-accent);
+        }
+
+        #search-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Current Weather Display --- */
+        #weather-display {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInTransform 0.8s forwards;
+        }
+
+        .current-weather {
+            padding: 30px;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.1); /* Lighter Glass Card */
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        #city-name {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--light-color);
+            position: relative;
+        }
+        
+        #temperature {
+            font-size: 4rem;
+            font-weight: 300;
+            line-height: 1;
+            margin: 0 0 10px 0;
+        }
+
+        #description, #humidity, #wind-speed {
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* --- Forecast Cards --- */
+        h3 {
+            color: var(--primary-accent);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        #forecast-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .forecast-card {
+            flex: 1 1 150px;
+            background: var(--dark-color);
+            border-radius: 12px;
+            padding: 20px 10px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            
+            /* Card Hover Effect: 3D Lift */
+            transform: perspective(1000px) rotateX(0deg);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .forecast-card:hover {
+            background: rgba(255, 255, 255, 0.15); /* Slightly brighter on hover */
+            transform: perspective(1000px) rotateX(5deg) scale(1.05); /* 3D tilt and lift */
+            box-shadow: var(--shadow-hover);
+        }
+
+        .forecast-card i {
+            font-size: 2rem;
+            color: var(--primary-accent);
+            margin: 10px 0;
+        }
+
+        .forecast-card h4 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* --- Utility & Animation --- */
+        .hidden {
+            display: none !important;
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(220, 53, 69, 0.2);
+            border-radius: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--primary-accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        
+        @keyframes fadeInTransform {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+            }
+            #search-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            #city-input, #search-btn {
+                width: 100%;
+                max-width: 350px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            #city-input {
+                 border-right: none;
+            }
+            #search-btn {
+                margin-top: 5px;
+            }
+            #forecast-container {
+                justify-content: center;
+                gap: 10px;
+            }
+            .forecast-card {
+                flex: 1 1 45%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Weather Dashboard</h1>
+        
+        <form id="search-form">
+            <input type="text" id="city-input" placeholder="Enter City Name" value="San Francisco" required>
+            <button type="submit" id="search-btn">Get Weather</button>
+        </form>
+
+        <div id="loading-spinner" class="hidden"></div>
+        <div id="error-message" class="hidden error"></div>
+
+        <div id="weather-display" class="hidden">
+            <div class="current-weather">
+                <div id="weather-icon-current"><i class="fas fa-sun"></i></div>
+                <h2 id="city-name"></h2>
+                <p id="temperature"></p>
+                <p id="description"></p>
+                <p id="humidity"><i class="fas fa-tint"></i> Humidity: 0%</p>
+                <p id="wind-speed"><i class="fas fa-wind"></i> Wind Speed: 0 m/s</p>
+            </div>
+            
+            <h3>5-Day Forecast</h3>
+            <div id="forecast-container">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // --- JAVASCRIPT LOGIC (Dummy Data for Aesthetics) ---
+
+        // 1. DUMMY DATA SETUP
+        const dummyWeatherData = {
+            current: {
+                name: "San Francisco",
+                main: { temp: 15.5, humidity: 65 },
+                weather: [{ description: "clear sky", icon: "01d" }],
+                wind: { speed: 4.1 },
+            },
+            // Simplified dummy forecast for 5 days
+            forecast: {
+                list: [
+                    // Day 1: Sunny
+                    { dt: Date.now() / 1000 + 86400 * 1, dt_txt: "12:00:00", main: { temp: 17 }, weather: [{ description: "sunny", icon: "01d" }] },
+                    // Day 2: Light Rain
+                    { dt: Date.now() / 1000 + 86400 * 2, dt_txt: "12:00:00", main: { temp: 14 }, weather: [{ description: "light rain", icon: "10d" }] },
+                    // Day 3: Cloudy
+                    { dt: Date.now() / 1000 + 86400 * 3, dt_txt: "12:00:00", main: { temp: 16 }, weather: [{ description: "overcast clouds", icon: "04d" }] },
+                    // Day 4: Thunderstorm
+                    { dt: Date.now() / 1000 + 86400 * 4, dt_txt: "12:00:00", main: { temp: 18 }, weather: [{ description: "thunderstorm", icon: "11d" }] },
+                    // Day 5: Snow
+                    { dt: Date.now() / 1000 + 86400 * 5, dt_txt: "12:00:00", main: { temp: 5 }, weather: [{ description: "moderate snow", icon: "13d" }] },
+                ]
+            }
+        };
+
+        // 2. MOCK API HANDLER
+        async function getWeatherData(city) {
+            // Simulate API latency
+            await new Promise(resolve => setTimeout(resolve, 800)); 
+            
+            // Check for a specific error trigger city for testing
+            if (city.toLowerCase() === 'error') {
+                 throw new Error("Failed to fetch weather data. Check your connection.");
+            }
+
+            // Return the dummy data, modified slightly based on the input city for variety
+            const data = JSON.parse(JSON.stringify(dummyWeatherData)); // Deep copy
+            data.current.name = city.toUpperCase();
+            data.current.main.temp = (Math.random() * 15 + 10).toFixed(1); // Randomize temp
+            
+            return data;
+        }
+
+        // 3. UI/AESTHETICS MANAGER
+        const elements = {
+            dashboardContainer: document.querySelector('.dashboard-container'),
+            loadingSpinner: document.getElementById('loading-spinner'),
+            errorMessage: document.getElementById('error-message'),
+            weatherDisplay: document.getElementById('weather-display'),
+            cityName: document.getElementById('city-name'),
+            temperature: document.getElementById('temperature'),
+            description: document.getElementById('description'),
+            humidity: document.getElementById('humidity'),
+            windSpeed: document.getElementById('wind-speed'),
+            weatherIconCurrent: document.getElementById('weather-icon-current'),
+            forecastContainer: document.getElementById('forecast-container'),
+        };
+
+        const weatherConditionsMap = {
+            '01d': { icon: 'fas fa-sun', bg: 'https://images.unsplash.com/photo-1542472737-23363fe507a2?fit=crop&w=1500&h=1000' }, // Sunny
+            '10d': { icon: 'fas fa-cloud-showers-heavy', bg: 'https://images.unsplash.com/photo-1507779021237-75e3c7908b90?fit=crop&w=1500&h=1000' }, // Rain
+            '04d': { icon: 'fas fa-cloud', bg: 'https://images.unsplash.com/photo-1510340866951-8b010d11f71f?fit=crop&w=1500&h=1000' }, // Cloudy
+            '11d': { icon: 'fas fa-bolt', bg: 'https://images.unsplash.com/photo-1429552030000-80c10c8c07d3?fit=crop&w=1500&h=1000' }, // Thunderstorm
+            '13d': { icon: 'fas fa-snowflake', bg: 'https://images.unsplash.com/photo-1544453000-0e13993d9370?fit=crop&w=1500&h=1000' }, // Snow
+            // Default/Fallback
+            'default': { icon: 'fas fa-smog', bg: 'https://images.unsplash.com/photo-1542472737-23363fe507a2?fit=crop&w=1500&h=1000' }
+        };
+
+        function showLoading() {
+            elements.loadingSpinner.classList.remove('hidden');
+            elements.weatherDisplay.classList.add('hidden');
+            elements.errorMessage.classList.add('hidden');
+        }
+
+        function hideLoading() {
+            elements.loadingSpinner.classList.add('hidden');
+        }
+
+        function displayError(message) {
+            hideLoading();
+            elements.weatherDisplay.classList.add('hidden');
+            elements.errorMessage.textContent = message;
+            elements.errorMessage.classList.remove('hidden');
+        }
+
+        function clearError() {
+            elements.errorMessage.classList.add('hidden');
+        }
+        
+        // Function to update the background image and icon based on weather condition
+        function setAesthetics(iconCode, description) {
+            const condition = weatherConditionsMap[iconCode] || weatherConditionsMap['default'];
+            
+            // 1. Update Background Image (smooth transition handled by CSS)
+            document.body.style.backgroundImage = `url('${condition.bg}')`;
+
+            // 2. Update Current Weather Icon
+            elements.weatherIconCurrent.innerHTML = `<i class="${condition.icon}" style="font-size: 4rem; color: var(--primary-accent); margin-bottom: 20px;"></i>`;
+        }
+
+        function updateCurrentWeather(data) {
+            setAesthetics(data.weather[0].icon, data.weather[0].description);
+
+            elements.cityName.textContent = data.name;
+            elements.temperature.textContent = `${Math.round(data.main.temp)}°C`;
+            elements.description.textContent = data.weather[0].description.toUpperCase();
+            elements.humidity.innerHTML = `<i class="fas fa-tint"></i> Humidity: ${data.main.humidity}%`;
+            elements.windSpeed.innerHTML = `<i class="fas fa-wind"></i> Wind Speed: ${data.wind.speed} m/s`;
+            
+            elements.weatherDisplay.classList.remove('hidden');
+        }
+
+        function updateForecast(forecastData) {
+            elements.forecastContainer.innerHTML = ''; 
+
+            const dailyForecasts = forecastData.list.filter(item => item.dt_txt.includes('12:00:00'));
+
+            dailyForecasts.forEach(item => {
+                const date = new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+                const temp = Math.round(item.main.temp);
+                const description = item.weather[0].description;
+                const iconCode = item.weather[0].icon;
+                const condition = weatherConditionsMap[iconCode] || weatherConditionsMap['default'];
+
+                const card = document.createElement('div');
+                card.className = 'forecast-card';
+                card.innerHTML = `
+                    <h4>${date}</h4>
+                    <i class="${condition.icon}"></i>
+                    <p style="font-size: 1.5rem; margin: 5px 0;">${temp}°C</p>
+                    <small>${description}</small>
+                `;
+                elements.forecastContainer.appendChild(card);
+            });
+        }
+
+
+        // 4. MAIN LOGIC
+        const searchForm = document.getElementById('search-form');
+        const cityInput = document.getElementById('city-input');
+        
+        // Initial dummy load function
+        async function loadDefaultWeather() {
+            await handleSearch(null, cityInput.value);
+        }
+
+        async function handleSearch(event, cityOverride = null) {
+            if (event) event.preventDefault(); 
+            
+            const city = cityOverride || cityInput.value.trim();
+
+            if (!city) {
+                displayError("Please enter a city name.");
+                return;
+            }
+
+            clearError();
+            showLoading();
+
+            try {
+                const weatherData = await getWeatherData(city);
+
+                updateCurrentWeather(weatherData.current);
+                updateForecast(weatherData.forecast);
+
+            } catch (error) {
+                displayError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Event Listeners
+        searchForm.addEventListener('submit', handleSearch);
+        window.addEventListener('load', loadDefaultWeather);
+    </script>
+</body>
+</html>

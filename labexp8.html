@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiment 8 – OOP Product Display with SCSS</title>
+
+  <style>
+  :root {
+    --bg: #ffffff;
+    --text: #222;
+    --card-bg: #f7f9fc;
+  }
+  .dark-theme {
+    --bg: #1b1b1b;
+    --text: #e0e0e0;
+    --card-bg: #2a2a2a;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    transition: 0.3s;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,.12);
+    transition: 0.3s;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+  }
+  .product-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #4a90e2;
+    font-size: 1.3rem;
+  }
+  .product-card .category {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  .product-card .price {
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin-top: 0.8rem;
+    color: #27ae60;
+  }
+  .theme-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: 0.2s;
+    box-shadow: 0 2px 8px rgba(74,144,226,0.3);
+  }
+  button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+  .stats {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #666;
+  }
+  </style>
+</head>
+<body>
+  <h1>Tech Product Showcase (OOP + SCSS)</h1>
+
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()">🌙 Toggle Dark Theme</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div id="productContainer" class="products"></div>
+
+  <script>
+    class Product {
+      constructor(name, category, price, specs = {}) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.specs = specs;
+      }
+
+      getInfo() {
+        return `${this.category}`;
+      }
+
+      getDisplayPrice() {
+        return new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR',
+          maximumFractionDigits: 0
+        }).format(this.price);
+      }
+    }
+
+    class BrandedProduct extends Product {
+      constructor(name, category, price, brand, specs = {}) {
+        super(name, category, price, specs);
+        this.brand = brand;
+      }
+
+      getInfo() {
+        return `${this.brand} ${this.category}`;
+      }
+    }
+
+    class PremiumProduct extends BrandedProduct {
+      constructor(name, category, price, brand, warranty, specs = {}) {
+        super(name, category, price, brand, specs);
+        this.warranty = warranty;
+      }
+
+      getInfo() {
+        return `${this.brand} ${this.name} (${this.warranty} Warranty)`;
+      }
+    }
+
+    const products = [
+      // Laptops
+      new BrandedProduct("MacBook Air M2", "Laptops", 112900, "Apple", { ram: "16GB", storage: "512GB" }),
+      new BrandedProduct("ThinkPad X1 Carbon", "Laptops", 145000, "Lenovo", { ram: "32GB", storage: "1TB" }),
+      new PremiumProduct("ROG Zephyrus G14", "Gaming Laptops", 189999, "ASUS", "2 Years", { gpu: "RTX 4070" }),
+      
+      // Smartphones
+      new BrandedProduct("iPhone 16 Pro", "Smartphones", 119900, "Apple", { camera: "48MP" }),
+      new BrandedProduct("Galaxy S25 Ultra", "Smartphones", 129999, "Samsung", { display: "6.8\"" }),
+      new PremiumProduct("OnePlus 13", "Smartphones", 69999, "OnePlus", "2 Years", { charger: "100W" }),
+      
+      // Audio
+      new BrandedProduct("AirPods Pro 2", "TWS Earbuds", 24900, "Apple"),
+      new BrandedProduct("WH-1000XM5", "Headphones", 29990, "Sony", { noiseCancel: "Yes" }),
+      new BrandedProduct("Soundcore Liberty 4", "TWS Earbuds", 7999, "Anker"),
+      
+      // Accessories
+      new Product("Mechanical Keyboard", "Keyboards", 4999),
+      new BrandedProduct("Magic Mouse 2", "Mouse", 7900, "Apple"),
+      new BrandedProduct("Logitech MX Master 3S", "Mouse", 9995, "Logitech"),
+      
+      // Storage
+      new BrandedProduct("Samsung 990 PRO 1TB", "SSD", 11999, "Samsung"),
+      new BrandedProduct("WD Black SN850X 2TB", "SSD", 18999, "Western Digital"),
+      
+      // Monitors
+      new PremiumProduct("UltraFine 4K", "Monitors", 45999, "LG", "3 Years"),
+      new BrandedProduct("Odyssey G9", "Gaming Monitors", 129999, "Samsung", { refresh: "240Hz" })
+    ];
+
+    function updateStats() {
+      const statsEl = document.getElementById("stats");
+      const totalProducts = products.length;
+      const totalValue = products.reduce((sum, p) => sum + p.price, 0);
+      statsEl.innerHTML = `Showing ${totalProducts} products | Total Value: ₹${totalValue.toLocaleString('en-IN')}`;
+    }
+
+    function displayProducts() {
+      const container = document.getElementById("productContainer");
+      container.innerHTML = "";
+
+      products.forEach((product, index) => {
+        const card = document.createElement("div");
+        card.classList.add("product-card");
+
+        card.innerHTML = `
+          <h3>${product.name}</h3>
+          <p class="category">${product.getInfo()}</p>
+          ${product.warranty ? `<p style="color: #e67e22; font-size: 0.85rem;">${product.warranty} Warranty</p>` : ''}
+          <p class="price">${product.getDisplayPrice()}</p>
+        `;
+
+        card.addEventListener('click', () => {
+          alert(`Selected: ${product.name}\nCategory: ${product.getInfo()}\nPrice: ${product.getDisplayPrice()}`);
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+    }
+
+    // Initialize
+    displayProducts();
+    updateStats();
+
+    // Add search functionality
+    window.addEventListener('DOMContentLoaded', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = '🔍 Search products...';
+      input.style.cssText = `
+        padding: 0.8rem 1.2rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 1rem;
+        width: 300px;
+        margin-bottom: 1rem;
+        outline: none;
+        transition: border-color 0.2s;
+      `;
+      input.onfocus = () => input.style.borderColor = '#4a90e2';
+      input.onblur = () => input.style.borderColor = '#e0e0e0';
+
+      input.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = products.filter(p => 
+          p.name.toLowerCase().includes(query) || 
+          p.category.toLowerCase().includes(query) ||
+          (p.brand && p.brand.toLowerCase().includes(query))
+        );
+        
+        // Temporarily override products for display
+        const original = products.slice();
+        products.length = 0;
+        products.push(...filtered);
+        displayProducts();
+        updateStats();
+        
+        // Restore original after short delay
+        setTimeout(() => {
+          products.length = 0;
+          products.push(...original);
+          displayProducts();
+          updateStats();
+        }, 1000);
+      });
+
+      document.querySelector('.theme-toggle').appendChild(input);
+    });
+  </script>
+</body>
+</html>

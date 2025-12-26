@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Registration Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #3968c7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .form-container {
+    background-color: rgb(11, 13, 26);
+    padding: 25px 35px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #f1e3e3;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  label {
+    font-weight: bold;
+    color: #c4eeec;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  select {
+    padding: 10px;
+    border: 1px solid #a41d1d;
+    border-radius: 6px;
+    width: 100%;
+    transition: border-color 0.3s;
+  }
+
+  .checkbox-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .checkbox-group label {
+    font-weight: normal;
+  }
+
+  button {
+    background-color: #007bff;
+    border: none;
+    color: rgb(226, 221, 221);
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 8px auto 0;
+  }
+</style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Event Registration</h2>
+    <form>
+      <div>
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+      </div>
+
+      <div>
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="example@mail.com" required>
+      </div>
+
+      <div>
+        <label for="event">Choose Event</label>
+        <select id="event" required>
+          <option value="">Select event</option>
+          <option value="workshop">Workshop</option>
+          <option value="seminar">Seminar</option>
+          <option value="competition">Competition</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Preferences</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="preferences" value="meals"> Meals</label>
+          <label><input type="checkbox" name="preferences" value="materials"> Study Materials</label>
+          <label><input type="checkbox" name="preferences" value="certificate"> Certificate</label>
+        </div>
+      </div>
+
+      <button type="submit">Register Now</button>
+    </form>
+  </div>
+</body>
+</html>

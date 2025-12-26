@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Product Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background: #030202;
+    margin: 0;
+    padding: 30px;
+}
+h1 {
+    text-align: center;
+    background-color: #070705;
+    color:#0e9209;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin: 30px auto;
+    max-width: 1200px;
+}
+
+.product-card {
+    background: #f3ebec;
+    box-shadow: 0 2px 12px 2px #ccc4;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px;
+    transition: box-shadow 0.2s;
+}
+.product-card img {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    margin-bottom: 16px;
+}
+
+.product-card h2 {
+    margin: 8px 0 3px 0;
+    font-size: 1.15em;
+    color:#2d8758;
+}
+.product-card .price {
+    color: #2d8758;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+.product-card .desc {
+    color: #0c010f;
+    font-size: 0.97em;
+    text-align: center;
+    margin: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .product-card img {
+        max-width: 140px;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+    .product-card img {
+        max-width: 120px;
+    }
+    body {
+        padding: 10px;
+    }
+}
+</style>
+</head>
+<body>
+    <h1>Accessory Store Gallery</h1>
+    <div class="gallery">
+        <div class="product-card">
+            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT-bVTMYzU9vND4PUPn6EQHsRiw0OFXzImGzwETtOEXF0wC7re4mCQeCQdJG5YfMX-RYvoOFg0Z" alt="Casio Watch">
+            <h2>Casio Watch</h2>
+            <p class="price">$120</p>
+            <p class="desc">Elegant wristwatch with leather strap.</p>
+        </div>
+        <div class="product-card">
+            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTa7RD4EkVZSQvOnaE-vtLwPDBPXROmAYxPAVu3_-B8woF9P9hTjyYqEjdwXA" alt="Gold Bracelet">
+            <h2>Gold Bracelet</h2>
+            <p class="price">$99</p>
+            <p class="desc">18K gold-plated bracelet with modern design.</p>
+        </div>
+        <div class="product-card">
+            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRcy0FMCT_J2xisQKYXho35Eh8FpSM_llgRmtoRIM1JAv7yNkeGz_-otfg97-DGehOe0ovLKaRDGQ" alt="Gucci Sunglasses">
+            <h2>Gucci Sunglasses</h2>
+            <p class="price">$59</p>
+            <p class="desc">Shade your style with confidence.</p>
+        </div>
+        <div class="product-card">
+            <img src="https://5.imimg.com/data5/ANDROID/Default/2021/3/DB/EC/LG/74947638/product-jpeg-500x500.jpg" alt="Guccie shoes">
+            <h2>Guccie shoes</h2>
+            <p class="price">$2k</p>
+            <p class="desc">Quality is remembered long after the price is forgotten.</p>
+        </div>
+     </div>
+</body>
+</html>

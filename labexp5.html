@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantara | Global Wildlife Initiative</title>
+   <style>
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
+    --dark-bg: #1e1e1e;
+    --light-text: #f8f9fa;
+    --accent-color: #ffc107;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--dark-bg);
+    padding: 15px 25px;
+    color: var(--light-text);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--light-text);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), 
+                url() no-repeat center center/cover;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--light-text);
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 3.5em;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hero p {
+    font-size: 1.3em;
+    max-width: 700px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+
+.vantara-info {
+    padding: 60px 20px;
+    background-color: var(--light-text);
+    text-align: center;
+}
+
+.vantara-info h2 {
+    font-size: 2.5em;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--accent-color);
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.vantara-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    color: var(--secondary-color);
+    font-size: 1.5em;
+    margin-top: 0;
+}
+
+.card p {
+    font-size: 1.05em;
+    color: #555;
+}
+
+/* FOOTER */
+.footer {
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    padding: 50px 25px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-item h3 {
+    margin-bottom: 15px;
+    color: var(--accent-color);
+    font-size: 1.2em;
+}
+
+.footer-item p {
+    margin: 5px 0;
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.social-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--light-text);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    margin-top: 30px;
+    font-size: 0.9em;
+}
+
+
+@media (max-width: 992px) {
+    .vantara-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5em;
+    }
+    .nav-links {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .social-links {
+        align-items: center;
+    }
+}
+</style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">VANTARA</div>
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#mission">Our Mission</a></li>
+            <li><a href="#pillars">Pillars</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>Vantara: Star of the Forest</h1>
+        <p>The world's largest animal rescue, rehabilitation, and conservation initiative by Reliance Foundation.</p>
+    </section>
+
+    <section id="mission" class="vantara-info">
+        <h2>Our Commitment to Wildlife</h2>
+        <div class="vantara-grid">
+            
+            <div class="card">
+                <h3>Global Rescue & Care</h3>
+                <p>Spanning over 3,000 acres, Vantara is a sanctuary in Jamnagar, Gujarat. We provide a safe haven and state-of-the-art medical care to over 1.5 lakh animals and 2,000+ species rescued from peril globally.</p>
+            </div>
+
+            <div class="card">
+                <h3>State-of-the-Art Facilities</h3>
+                <p>The facility features a world-class wildlife hospital, advanced veterinary units, and specialized care centers, including hydrotherapy for elephants, ensuring every animal receives dignity and expert treatment.</p>
+            </div>
+
+            <div class="card">
+                <h3>Conservation & Research</h3>
+                <p>We actively engage in ex-situ and in-situ conservation, breeding programs, and habitat restoration. Collaborating with international bodies to safeguard endangered species and strengthen global biodiversity.</p>
+            </div>
+            
+        </div>
+    </section>
+    
+    <section id="pillars" class="vantara-info" style="background-color: #e9ecef;">
+        <h2>The Four Pillars of Vantara</h2>
+        <div class="vantara-grid">
+            
+            <div class="card">
+                <h3>1. Rescue</h3>
+                <p>Locating and securing wildlife in distress from abuse, illegal trafficking, or conflict zones, with precision and compassionate care.</p>
+            </div>
+
+            <div class="card">
+                <h3>2. Treatment & Care</h3>
+                <p>Holistic and advanced medical attention, combining modern diagnostics with traditional therapies like Ayurveda, for comprehensive healing.</p>
+            </div>
+
+            <div class="card">
+                <h3>3. Rehabilitation</h3>
+                <p>Helping rescued animals regain essential survival skills and transition back to a life of independence.</p>
+            </div>
+            
+            <div class="card">
+                <h3>4. Reintroduction</h3>
+                <p>Careful rewilding and reintroduction efforts for species back into their natural habitats where possible, restoring ecological balance.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-grid">
+
+            <div class="footer-item">
+                <h3>Vantara Location</h3>
+                <p>Motikhavdi Village, Jamnagar</p>
+                <p>Gujarat, India</p>
+            </div>
+
+            <div class="footer-item">
+                <h3>Contact & Support</h3>
+                <p>Email: contact@vantara.in</p>
+                <p>Phone: +91 98765 43210 (General Inquiries)</p>
+            </div>
+            
+            <div class="footer-item">
+                <h3>Quick Links</h3>
+                <div class="social-links">
+                    <a href="#mission">Our Vision</a>
+                    <a href="#pillars">Pillars of Work</a>
+                    <a href="#">Join the Cause</a>
+                </div>
+            </div>
+
+            <div class="footer-item">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="copyright">
+            &copy; 2025 Vantara - An Initiative of Reliance Foundation. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

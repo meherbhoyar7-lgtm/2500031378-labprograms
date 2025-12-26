@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 India Travel Explorer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --bg: linear-gradient(145deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --glass: rgba(255,255,255,0.1);
+            --border: rgba(255,255,255,0.15);
+            --accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text: #f8fafc;
+            --text-muted: #cbd5e1;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--glass);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+            backdrop-filter: blur(20px);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: end;
+        }
+        
+        .search-input, .filter-tabs, .refresh-btn {
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--glass);
+            color: var(--text);
+            backdrop-filter: blur(15px);
+            font-size: 1rem;
+        }
+        
+        .search-input {
+            flex: 1;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+        }
+        
+        .filter-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-tab.active, .filter-tab:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .refresh-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102,126,234,0.3);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat {
+            background: var(--glass);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+        
+        .destinations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .destination {
+            background: var(--glass);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+        }
+        
+        .destination:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .dest-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dest-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .destination:hover .dest-image img {
+            transform: scale(1.1);
+        }
+        
+        .image-placeholder {
+            height: 100%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: white;
+        }
+        
+        .dest-content {
+            padding: 1.5rem;
+        }
+        
+        .dest-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dest-location {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .dest-description {
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            max-height: 4em;
+            overflow: hidden;
+        }
+        
+        .dest-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .price {
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .expand-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .controls { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+            .destinations { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🌟 India Travel Explorer</h1>
+            <p class="subtitle">Discover India's breathtaking destinations with stunning images</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-number" id="totalDest">12</span>
+                <span>Total</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="beachCount">3</span>
+                <span>Beaches</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="mountainCount">4</span>
+                <span>Mountains</span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search destinations...">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="beach">🏖️ Beach</button>
+                <button class="filter-tab" data-filter="mountain">🏔️ Mountain</button>
+            </div>
+            <button class="refresh-btn" id="refreshBtn">🔄 Refresh</button>
+        </div>
+        
+        <div class="destinations" id="destinations"></div>
+    </div>
+
+    <script>
+        class TravelApp {
+            constructor() {
+                this.destinations = [
+                    { 
+                        name: '🗼 Taj Mahal', 
+                        short: 'Agra', 
+                        region: 'Uttar Pradesh', 
+                        type: 'culture', 
+                        price: 2500, 
+                        rating: 4.9,
+                        image: 'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxi3bFkLRAd0ACndJtJSML-OG9kWt6Cr2VhY5cWe_g4QMqMO3cvmXstWMYIdz5RR4i3aK1MppzXcOYVl27Ya6ih9-gEjU5_DZdmEokPG6GiYcgJbGloPOqT5qQYD4xGloh32UYI=s1360-w1360-h1020', // ADD IMAGE URL HERE
+                        description: 'Iconic white marble mausoleum built by Emperor Shah Jahan in memory of his wife Mumtaz Mahal. UNESCO World Heritage Site and one of the Seven Wonders of the World. Perfect example of Mughal architecture with intricate inlay work.'
+                    },
+                    { 
+                        name: '🏔️ Leh Ladakh', 
+                        short: 'Leh', 
+                        region: 'Ladakh', 
+                        type: 'mountain', 
+                        price: 8500, 
+                        rating: 4.8,
+                        image: 'https://images.indianexpress.com/2019/01/leh-ladakh-getty-images-759.jpg', // ADD IMAGE URL HERE
+                        description: 'High-altitude desert region with breathtaking landscapes, Buddhist monasteries, and adventure sports. Features Pangong Lake, Nubra Valley, and Magnetic Hill. Known as the "Land of High Passes".'
+                    },
+                    { 
+                        name: '🏖️ Goa Beaches', 
+                        short: 'Goa', 
+                        region: 'Goa', 
+                        type: 'beach', 
+                        price: 4500, 
+                        rating: 4.6,
+                        image: 'https://www.tourmyindia.com/states/goa/image/beaches-goa.webp', // ADD IMAGE URL HERE
+                        description: "India's famous beach destination with golden sands, Portuguese architecture, vibrant nightlife, and water sports. Popular beaches include Baga, Calangute, and Anjuna. Perfect for relaxation and parties."
+                    },
+                    { 
+                        name: '🕌 Jaipur', 
+                        short: 'Jaipur', 
+                        region: 'Rajasthan', 
+                        type: 'culture', 
+                        price: 3800, 
+                        rating: 4.7,
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuwGKbRqLptYDLFwuJtN_KfSrgmwf5MJm9nw&s', // ADD IMAGE URL HERE
+                        description: 'Pink City famous for its forts, palaces, and vibrant markets. Key attractions include Amber Fort, City Palace, Hawa Mahal, and Jantar Mantar observatory. Rich Rajasthani culture and cuisine.'
+                    },
+                    { 
+                        name: '🌊 Kerala Backwaters', 
+                        short: 'Alleppey', 
+                        region: 'Kerala', 
+                        type: 'beach', 
+                        price: 6500, 
+                        rating: 4.8,
+                        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/df/54/94/kerala-backwaters.jpg?w=700&h=-1&s=1', // ADD IMAGE URL HERE
+                        description: 'Network of serene brackish lagoons and lakes where luxury houseboats glide through palm-fringed canals. Experience authentic Kerala village life, seafood, and ayurvedic treatments.'
+                    },
+                    { 
+                        name: '⛰️ Manali', 
+                        short: 'Manali', 
+                        region: 'Himachal Pradesh', 
+                        type: 'mountain', 
+                        price: 5200, 
+                        rating: 4.7,
+                        image: 'https://lp-cms-production.imgix.net/2019-06/GettyImages-149353949_high.jpg?sharp=10&vib=20&w=1200&w=600&h=400', // ADD IMAGE URL HERE
+                        description: 'Hill station surrounded by snow-capped mountains and apple orchards. Famous for Rohtang Pass, Solang Valley adventure sports, and Hidimba Devi Temple. Perfect for honeymooners.'
+                    },
+                    { 
+                        name: '🏛️ Varanasi', 
+                        short: 'Varanasi', 
+                        region: 'Uttar Pradesh', 
+                        type: 'culture', 
+                        price: 3200, 
+                        rating: 4.8,
+                        image: 'https://s7ap1.scene7.com/is/image/incredibleindia/manikarnika-ghat-city-hero?qlt=82&ts=1727959374496', // ADD IMAGE URL HERE
+                        description: "World's oldest continuously inhabited city on the banks of sacred River Ganga. Famous for its ghats, Kashi Vishwanath Temple, evening Ganga Aarti, and spiritual significance."
+                    },
+                    { 
+                        name: '🌅 Udaipur', 
+                        short: 'Udaipur', 
+                        region: 'Rajasthan', 
+                        type: 'culture', 
+                        price: 4800, 
+                        rating: 4.9,
+                        image: 'https://www.thehosteller.com/_next/image/?url=https%3A%2F%2Fstatic.thehosteller.com%2Fhostel%2Fimages%2Fimage.jpg%2Fimage-1725454370390.jpg&w=3840&q=75', // ADD IMAGE URL HERE
+                        description: 'City of Lakes known as the Venice of the East. Features Lake Pichola, Lake Palace, City Palace, and boat rides. Most romantic city in India with royal heritage hotels.'
+                    },
+                    { 
+                        name: '🍃 Munnar', 
+                        short: 'Munnar', 
+                        region: 'Kerala', 
+                        type: 'mountain', 
+                        price: 4200, 
+                        rating: 4.7,
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSypBjB8KZeLWru522Jbj7fxK1_oETb04_qBg&s', // ADD IMAGE URL HERE
+                        description: 'Hill station famous for endless tea plantations, misty mountains, and cool climate. Visit tea factories, Eravikulam National Park, and Mattupetty Dam. Nature lover\'s paradise.'
+                    },
+                    { 
+                        name: '❄️ Gulmarg', 
+                        short: 'Gulmarg', 
+                        region: 'Jammu & Kashmir', 
+                        type: 'mountain', 
+                        price: 7200, 
+                        rating: 4.8,
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKav7d9FQXHHMvPwqE40W0qM-DP6_nP1fxew&s', // ADD IMAGE URL HERE
+                        description: "Asia's highest gondola cable car ride to Apharwat Peak. World-class skiing destination in winter and lush meadows in summer. Meadow of Flowers lives up to its name."
+                    },
+                    { 
+                        name: '🛕 Tirupati', 
+                        short: 'Tirupati', 
+                        region: 'Andhra Pradesh', 
+                        type: 'culture', 
+                        price: 2800, 
+                        rating: 4.9,
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPmNGzv4GJNjzlqYPRvriE0YJ2Ve9yGgIqSQ&s', // ADD IMAGE URL HERE
+                        description: "World's richest temple dedicated to Lord Venkateswara on Tirumala hills. One of the most visited pilgrimage sites attracting millions of devotees every year."
+                    },
+                    { 
+                        name: '🏝️ Andaman Islands', 
+                        short: 'Port Blair', 
+                        region: 'Andaman & Nicobar', 
+                        type: 'beach', 
+                        price: 9500, 
+                        rating: 4.9,
+                        image: 'https://www.indiantempletour.com/wp-content/uploads/2023/05/port-blair-tour-oack.png', // ADD IMAGE URL HERE
+                        description: 'Pristine coral islands with crystal clear waters and white sandy beaches. Radhanagar Beach voted Asia\'s best beach. World-class scuba diving and snorkeling.'
+                    }
+                ];
+                this.filtered = [...this.destinations];
+                this.expanded = new Set();
+                this.init();
+            }
+            
+            init() {
+                this.render();
+                this.updateStats();
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    this.filter(e.target.value.toLowerCase());
+                });
+                
+                document.querySelectorAll('.filter-tab').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelector('.filter-tab.active').classList.remove('active');
+                        e.target.classList.add('active');
+                        this.filter('', e.target.dataset.filter);
+                    });
+                });
+                
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    this.destinations.sort(() => Math.random() - 0.5);
+                    this.render();
+                });
+            }
+            
+            filter(query = '', type = 'all') {
+                this.filtered = this.destinations.filter(dest => {
+                    const matchQuery = !query || dest.name.toLowerCase().includes(query) || 
+                        dest.short.toLowerCase().includes(query) || dest.region.toLowerCase().includes(query) ||
+                        dest.description.toLowerCase().includes(query);
+                    const matchType = type === 'all' || dest.type === type;
+                    return matchQuery && matchType;
+                });
+                this.render();
+                this.updateStats();
+            }
+            
+            toggleExpand(id) {
+                if (this.expanded.has(id)) {
+                    this.expanded.delete(id);
+                } else {
+                    this.expanded.add(id);
+                }
+                this.render();
+            }
+            
+            render() {
+                document.getElementById('destinations').innerHTML = this.filtered.map(dest => {
+                    const isExpanded = this.expanded.has(dest.name);
+                    const hasImage = dest.image && dest.image.trim() !== '';
+                    return `
+                        <div class="destination" onclick="event.stopPropagation()">
+                            <div class="dest-image">
+                                ${hasImage ? 
+                                    `<img src="${dest.image}" alt="${dest.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` :
+                                    `<div class="image-placeholder">${dest.name.split(' ')[0]}</div>`
+                                }
+                            </div>
+                            <div class="dest-content">
+                                <h3 class="dest-name">${dest.name.split(' ').slice(1).join(' ')}</h3>
+                                <div class="dest-location">📍 ${dest.short}, ${dest.region}</div>
+                                <div class="dest-description" style="${isExpanded ? '' : 'max-height:4em;overflow:hidden'}">
+                                    ${dest.description}
+                                </div>
+                                <button class="expand-btn" onclick="travelApp.toggleExpand('${dest.name}')">
+                                    ${isExpanded ? '− Collapse' : '+ Read more'}
+                                </button>
+                                <div class="dest-meta">
+                                    <span>⭐ ${dest.rating}</span>
+                                    <span>₹${dest.price.toLocaleString()}/night</span>
+                                </div>
+                                <div class="price">Book Now</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            updateStats() {
+                document.getElementById('totalDest').textContent = this.destinations.length;
+                document.getElementById('beachCount').textContent = this.destinations.filter(d => d.type === 'beach').length;
+                document.getElementById('mountainCount').textContent = this.destinations.filter(d => d.type === 'mountain').length;
+            }
+        }
+        
+        const travelApp = new TravelApp();
+    </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>🖋️ Meher's Inventory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+       
+        :root {
+            --color-primary-dark: #1e3a8a; 
+            --color-primary-light: #3b82f6; 
+            --color-gold: #b8860b; 
+            --color-text-dark: #1f2937; 
+            --color-text-light: #4b5563; 
+            --gradient-primary: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-light) 100%);
+            --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            --gradient-gold-bg: linear-gradient(135deg, #d4af37 0%, #ffc72c 100%);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: #fdfdfd;
+            color: var(--color-text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 90%, rgba(30, 58, 138, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 10%, rgba(184, 134, 11, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+       
+        .hero-section {
+            background: var(--color-primary-dark);
+            color: white;
+            padding: 5rem 0;
+            margin: 0 0 4rem;
+            border-bottom: 8px solid var(--color-gold); 
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            text-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .lead {
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 700px;
+        }
+
+        
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05); 
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-gold-bg);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .book-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+      
+        .book-cover {
+            height: 300px;
+            background: #f9fafb; 
+            border-bottom: 1px solid #e5e7eb;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .book-cover::after {
+            content: none; 
+        }
+
+        .book-cover img {
+            display: block;
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; 
+            border-radius: 4px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover:hover img {
+            transform: scale(1.03); 
+        }
+       
+
+        .genre-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem; 
+            background: var(--color-primary-dark);
+            color: white;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+
+        .card-body {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--color-text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .author {
+            color: var(--color-text-light);
+            font-weight: 400;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            font-style: italic; 
+        }
+
+        .price {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--color-gold); 
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            background: var(--color-primary-dark);
+            border: 2px solid var(--color-primary-dark);
+            color: white;
+            font-family: 'Crimson Pro', serif;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.3);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #d1d5db; 
+            color: #4b5563;
+            border: 2px solid #9ca3af;
+        }
+
+        
+        #cartPanel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.2);
+            border: 2px solid var(--color-gold); 
+            max-width: 420px;
+            position: fixed;
+            top: 6rem;
+            right: 2rem;
+            z-index: 1050;
+            display: none;
+            padding: 1.5rem;
+        }
+        #cartPanel.show { display: block; }
+        #cartPanel h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-primary-dark);
+            font-size: 1.8rem;
+        }
+        .cart-item {
+            background: #f9fafb;
+            border-left: 5px solid var(--color-gold); 
+        }
+
+        
+        .container > .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 1.5rem;
+        }
+
+        .col-xl-3 {
+            flex: 0 0 auto;
+            width: 25%;
+        }
+
+        @media (max-width: 992px) {
+            #cartPanel {
+                right: 50%;
+                transform: translateX(50%);
+                max-width: 95vw;
+                margin: 0 1rem;
+            }
+            #showCartBtn {
+                right: 50%;
+                transform: translateX(50%);
+                top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1><i class="fas fa-feather-alt me-3"></i>Meher's Inventory</h1>
+            <p class="lead mx-auto">A curated collection of the world's most influential and celebrated literary masterpieces, presented with distinction.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <p class="h4 fw-bold text-muted mb-0">Our Featured Collection ⚜️</p>
+            </div>
+        </div>
+
+        <div id="bookList" class="row"> 
+            
+        </div>
+    </div>
+
+    <button id="showCartBtn" aria-label="Toggle cart panel">
+        <i class="fas fa-shopping-basket me-2"></i>Cart (0)
+    </button>
+
+    <aside id="cartPanel" class="p-4" aria-live="polite" aria-atomic="true" aria-label="Shopping Cart">
+        <h4><i class="fas fa-shopping-bag me-2"></i>Cart Summary</h4>
+        <div id="cartItems" role="list">
+            <p class="text-center text-muted py-4 mb-0">Your cart is empty 😢</p>
+        </div>
+        <div id="cartSummary" class="d-flex justify-content-between h4 fw-bold mb-4 pt-3 border-top">
+            <span>Order Total:</span><span>₹0</span>
+        </div>
+        <div class="d-flex justify-content-between gap-3">
+            <button id="clearCartBtn" type="button">
+                <i class="fas fa-eraser me-2"></i>Clear Cart
+            </button>
+            <button id="checkoutBtn" type="button" disabled>
+                <i class="fas fa-hand-holding-usd me-2"></i>Proceed to Checkout
+            </button>
+        </div>
+    </aside>
+
+    <script>
+        // --- 1. UPDATED BOOK DATA with coverUrl property ---
+        const books = [
+            { id: 1, title: "The Alchemist", author: "Paulo Coelho", price: 299, genre: "Self-Help", coverUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/TheAlchemist.jpg/500px-TheAlchemist.jpg" },
+            { id: 2, title: "Atomic Habits", author: "James Clear", price: 499, genre: "Productivity", coverUrl: "https://www.oskareggert.com/content/images/size/w2000/2024/02/image_67203329.JPG" },
+            { id: 3, title: "Ikigai", author: "Héctor García", price: 350, genre: "Philosophy", coverUrl: "https://m.media-amazon.com/images/I/81l3rZK4lnL._AC_UF1000,1000_QL80_.jpg" },
+            { id: 4, title: "Psychology of Money", author: "Morgan Housel", price: 400, genre: "Finance", coverUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXV_u3NbscIj5TlH6Yhrp_2_-ycmUtp_ruAA-jD9LagVzWsCd9pimjgoZduffg_puwtfnniQ&s=10" },
+            { id: 5, title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", price: 250, genre: "Finance", coverUrl: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR3dNDjL2RQIkPqUoHbOhJz2xg40HdryZISclh1AVo_oUXhvGvS" },
+            { id: 6, title: "Sapiens: A Brief History of Humankind", author: "Yuval Noah Harari", price: 599, genre: "History", coverUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEG3agCZlM1DWpqBYHt_0qDr3EXM9gb_l89qGGAo1FBWK55JO-7bHIx2H_i24BWPhquyod1A&s=10" },
+            { id: 7, title: "1984", author: "George Orwell", price: 399, genre: "Dystopian", coverUrl: "https://m.media-amazon.com/images/I/71wANojhEKL.jpg" },
+            { id: 8, title: "To Kill a Mockingbird", author: "Harper Lee", price: 450, genre: "Classic", coverUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMcQq9Ujgg2pRwSEa7gL55eCXBHcBpOgNntA&s" }
+        ];
+
+        let cart = [];
+
+      
+        function createBookCard(book) {
+            const inCart = cart.some(item => item.id === book.id);
+            return `
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="card book-card h-100" role="article">
+                        <div class="book-cover position-relative">
+                            <span class="genre-badge">${book.genre}</span>
+                            <img src="${book.coverUrl}" alt="Cover image of ${book.title}" />
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">${book.title}</h5>
+                            <p class="author mb-4"><i class="fas fa-pen-nib me-2"></i>${book.author}</p>
+                            <div class="mt-auto">
+                                <p class="price">₹${book.price.toLocaleString()}</p>
+                                <button class="btn add-to-cart-btn w-100" ${inCart ? 'disabled' : ''} data-id="${book.id}">
+                                    ${inCart ? '<i class="fas fa-bookmark me-2"></i>In Cart' : '<i class="fas fa-cart-plus me-2"></i>Add to Cart'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        
+        function displayBooks() {
+            const container = document.getElementById('bookList');
+            container.classList.add('row', 'g-4'); 
+            container.innerHTML = books.map(b => createBookCard(b)).join('');
+            attachAddToCartListeners();
+            updateCartButton();
+        }
+
+        function attachAddToCartListeners() {
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    addToCart(id);
+                });
+            });
+        }
+
+        function addToCart(bookId) {
+            const book = books.find(b => b.id === bookId);
+            const item = cart.find(i => i.id === bookId);
+            if (!item && book) {
+                cart.push({ ...book, quantity: 1 });
+            }
+            updateCart();
+        }
+
+        function removeFromCart(bookId) {
+            cart = cart.filter(item => item.id !== bookId);
+            updateCart();
+        }
+
+        function updateCart() {
+            updateCartItems();
+            updateCartButton();
+            displayBooks(); 
+        }
+
+        function updateCartItems() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p class="text-center text-muted py-4 mb-0"><i class="fas fa-box-open fa-2x mb-3 d-block opacity-50"></i>Your cart is empty 😢</p>';
+                document.getElementById('checkoutBtn').disabled = true;
+                document.getElementById('cartSummary').children[1].textContent = '₹0';
+                return;
+            }
+
+            document.getElementById('checkoutBtn').disabled = false;
+
+            cartItemsDiv.innerHTML = cart.map(item => `
+                <div class="cart-item" role="listitem">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div style="flex: 1;">
+                            <div class="fw-bold fs-6 mb-1 text-primary-dark">${item.title}</div>
+                            <small class="text-muted">by ${item.author} • Qty: ${item.quantity}</small>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="h5 fw-bold text-gold mb-0" style="color: var(--color-gold);">₹${(item.price * item.quantity).toLocaleString()}</span>
+                            <button class="cart-remove-btn" aria-label="Remove ${item.title}" data-id="${item.id}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.cart-remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(e.currentTarget.getAttribute('data-id'));
+                    removeFromCart(id);
+                });
+            });
+
+            document.getElementById('cartSummary').children[1].textContent = `₹${totalPrice.toLocaleString()}`;
+        }
+
+        function updateCartButton() {
+            const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const cartBtn = document.getElementById('showCartBtn');
+            cartBtn.innerHTML = `<i class="fas fa-shopping-basket me-2"></i>Cart (${cartCount})`;
+            
+            if (cartCount > 0) {
+                cartBtn.style.background = 'var(--gradient-gold-bg)';
+                cartBtn.style.color = 'var(--color-text-dark)';
+            } else {
+                cartBtn.style.background = 'var(--color-text-light)';
+                cartBtn.style.color = 'white';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayBooks();
+            updateCart();
+        });
+        
+        document.getElementById('showCartBtn').addEventListener('click', () => {
+            document.getElementById('cartPanel').classList.toggle('show');
+        });
+
+        document.getElementById('clearCartBtn').addEventListener('click', () => {
+            if (cart.length > 0 && confirm('🗑️ Clear entire cart? This cannot be undone!')) {
+                cart = [];
+                updateCart();
+            }
+        });
+
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if (cart.length === 0) return;
+            const totalItems = cart.reduce((a, i) => a + i.quantity, 0);
+            const total = cart.reduce((a, i) => a + i.price * i.quantity, 0);
+            alert(`🖋️ Checkout Complete!\n\n📚 ${totalItems} book(s) purchased\n💰 Total: ₹${total.toLocaleString()}\n\nThank you for choosing The Luxury Library.`);
+            cart = [];
+            updateCart();
+            document.getElementById('cartPanel').classList.remove('show');
+        });
+    </script>
+</body>
+</html>
